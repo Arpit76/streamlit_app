@@ -10,7 +10,7 @@ DATA_URL="store_sales_2022-2023.csv"
 # to pick windows Emoji icon - press windows and .
 st.set_page_config(page_title="Sales Dashboard", page_icon="📈")
 
-st.title("Sales Dashboard")
+st.title("Sales Dashboard StreamLit")
 
 # --- HIDE STREAMLIT BRANDING ----
 hide_st_style = """

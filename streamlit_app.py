@@ -171,6 +171,20 @@ def loadSalesData1():
     y='Groceries',
     color='cluster'
 )
+    
+
+
+    #grouped_data['Frozen foods'].hist()
+    #plt.title('Frozen foods histogram')
+    #plt.show()
+
+# Create a matplotlib figure
+    fig, ax = plt.subplots()
+    grouped_data['Frozen foods'].hist(ax=ax)
+    ax.set_title('Frozen foods histogram')
+
+# Display the plot in Streamlit
+    st.pyplot(fig)
 
 with tab_page1:    
     data=loadTab1()

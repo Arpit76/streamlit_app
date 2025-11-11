@@ -20,7 +20,7 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-tab_page1, tab_page2, tab_page3 = st.tabs(["Sales DashBoard1", "Sales DashBoard2", "Sales DashBoard3"])
+tab_page3, tab_page2, tab_page1 = st.tabs(["Sales DashBoard3", "Sales DashBoard2", "Sales DashBoard1"])
 
 
 

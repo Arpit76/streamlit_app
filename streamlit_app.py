@@ -20,7 +20,7 @@ tab_page3, tab_page2, tab_page1, tab_page4 = st.tabs(["Sales DashBoard3", "Sales
 
 with tab_page1:    
     data=tab1.loadTab1()
-    data=tab4.loadTab4()
+    #data=tab4.loadTab4()
     data=tab1.loadSalesData()
 with tab_page2:
     #data=tab2.loadTab2()  

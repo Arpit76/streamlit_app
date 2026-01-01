@@ -1,6 +1,6 @@
 #streamlit run streamlit_app.py
 import streamlit as st
-import tab1,tab2,tab3,tab4
+import tab1,tab2,tab3,tab4,tab5
 
 st.set_page_config(layout="wide") 
 st.markdown("""
@@ -15,7 +15,7 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-tab_page3, tab_page2, tab_page1, tab_page4 = st.tabs(["Sales DashBoard3", "Sales DashBoard2", "Sales DashBoard1", "Recommendation"])
+tab_page3, tab_page2, tab_page1, tab_page4,tab_page5 = st.tabs(["Sales DashBoard3", "Sales DashBoard2", "Sales DashBoard1", "Recommendation","Stock Price Movement"])
 
 
 with tab_page1:    
@@ -28,6 +28,11 @@ with tab_page2:
 with tab_page4:    
     data=tab4.loadTab4()
     data=tab4.loadRecommendation()  
+
+with tab_page5:    
+    data=tab5.loadTab5()  
+    data=tab5.stockPriceMovement() 
+
 with tab_page3:    
     #data=tab3.loadTab3()
     data=tab3.loadSalesData2()

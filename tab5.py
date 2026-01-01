@@ -3,7 +3,7 @@ import yfinance as yf
 import pandas as pd
 import time
 import schedule
-from streamlit_autorefresh import st_autorefresh
+#from streamlit_autorefresh import st_autorefresh
 
 nifty_50_stocks = [
     "ADANIENT.NS","ADANIPORTS.NS","APOLLOHOSP.NS","ASIANPAINT.NS","AXISBANK.NS",

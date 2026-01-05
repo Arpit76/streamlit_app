@@ -21,8 +21,6 @@ nifty_50_stocks = [
 
 
 
-if "last_update" not in st.session_state:
-    st.session_state.last_update = 0
 
 ticker_placeholder = st.empty()
 table_placeholder = st.empty()
@@ -118,7 +116,11 @@ def fetch_prices():
 
 
 def maybe_update(ticker_placeholder, table_placeholder):
+    if "last_update" not in st.session_state:
+        st.session_state.last_update = 0
+
     now = time.time()
+
   
     if now - st.session_state.last_update >= 30:
         stockPriceMovement(ticker_placeholder, table_placeholder)

@@ -7,6 +7,8 @@ duckdb
 plotly
 yfinance
 schedule
+streamlit_autorefresh
+
 
 
 

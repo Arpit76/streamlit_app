@@ -4,6 +4,7 @@ import pandas as pd
 import time
 import schedule
 
+from streamlit_autorefresh import st_autorefresh
 
 nifty_50_stocks = [
     "ADANIENT.NS","ADANIPORTS.NS","APOLLOHOSP.NS","ASIANPAINT.NS","AXISBANK.NS",
@@ -20,94 +21,69 @@ nifty_50_stocks = [
 
 
 
+if "last_update" not in st.session_state:
+    st.session_state.last_update = 0
+
+ticker_placeholder = st.empty()
+table_placeholder = st.empty()
 
 def loadTab5():    
+    
     st.text("Welcome to Stock Price Movement ")
+    
+    ticker_placeholder = st.empty()
+    table_placeholder = st.empty()
+    
+    maybe_update(ticker_placeholder, table_placeholder)
 
-def stockPriceMovement():
-    st.text(nifty_50_stocks)
+ 
+
+
+
+
+def stockPriceMovement(ticker_placeholder, table_placeholder):
+
     latest_nifty, nifty_change, df = fetch_prices()
 
-    ticker_parts = []
-
-    # Add Nifty itself
-    ticker_parts.append(
+    ticker_parts = [
         f"<b>NIFTY 50:</b> {latest_nifty:.2f} {color_and_arrow(nifty_change)}"
-    )
+    ]
 
-    # Add stocks
     for symbol, row in df.iterrows():
         ticker_parts.append(
             f"{symbol}: {row['Price']:.2f} {color_and_arrow(row['Change'])}"
-            
         )
-        print(symbol + ": " + str(row["Price"]))
-    
+
     ticker_text = " &nbsp;&nbsp; | &nbsp;&nbsp; ".join(ticker_parts)
 
     ticker_html = f"""
     <style>
     .ticker-wrap {{
-    width: 100%;
-    overflow: hidden;
-    background: #000;
-    padding: 8px 0;
+        width: 100%;
+        overflow: hidden;
+        background: #000;
+        padding: 8px 0;
     }}
 
-    .ticker_bk {{
-    display: flex;
-    width: max-content;
-    animation: scroll 40s linear infinite;
-    }}
-    .ticker span {{
+    .ticker {{
         white-space: nowrap;
-        padding-right: 60px;
+        animation: marquee 60s linear infinite;
         font-size: 20px;
         color: white;
-        }}
-    .ticker {{
-    display: inline-block;
-    white-space: nowrap;
-    animation: marquee 100s linear infinite;
-    font-size: 20px;
-    color: white;
     }}
+
     @keyframes marquee {{
-    0%   {{ transform: translateX(100%); }}
-    100% {{ transform: translateX(-100%); }}
-    }}
-    @keyframes scroll {{
-    from    {{ transform: translateX(0); }}
-    t0 {{ transform: translateX(-50%);}}
+        0% {{ transform: translateX(100%); }}
+        100% {{ transform: translateX(-100%); }}
     }}
     </style>
 
     <div class="ticker-wrap">
-    <div class="ticker">
-        {ticker_text}
-            
-    </div>
+        <div class="ticker">{ticker_text}</div>
     </div>
     """
 
-    # -----------------------------------
-    #         DISPLAY TICKER
-    # -----------------------------------
-    st.markdown(ticker_html, unsafe_allow_html=True)
-
-    # -----------------------------------
-    #        DISPLAY TABLE
-    # -----------------------------------
-    st.subheader("📊 Nifty 50 Latest Stock Prices")
-    st.subheader({time.strftime('%H:%M:%S')})
-    #st.dataframe(df.style.format({
-    #    "Price": "{:.2f}",
-    #    "Prev Close": "{:.2f}",
-    #    "Change": "{:.2f}",
-    #    "% Change": "{:.2f}%"
-    #}))
-
-    #print(df)
+    ticker_placeholder.markdown(ticker_html, unsafe_allow_html=True)
 
     styled_df = df.style.format({
         "Price": "{:.2f}",
@@ -116,14 +92,7 @@ def stockPriceMovement():
         "% Change": "{:.2f}%"
     })
 
-
-    row_height = 35
-    st.dataframe(styled_df, height=(row_height * len(df)) + 60)
-
-    #time.sleep(30)
-    #stockPriceMovement()
-    #st_autorefresh(interval=3000, key="ticker_refresh")
-
+    table_placeholder.dataframe(styled_df, width='stretch')
 
 def fetch_prices():
     # Nifty Index
@@ -145,6 +114,18 @@ def fetch_prices():
     })
 
     return latest_nifty, nifty_change, df
+
+
+
+def maybe_update(ticker_placeholder, table_placeholder):
+    now = time.time()
+  
+    if now - st.session_state.last_update >= 30:
+        stockPriceMovement(ticker_placeholder, table_placeholder)
+        st.session_state.last_update = now
+
+    time.sleep(40)
+    maybe_update(ticker_placeholder, table_placeholder)
 
 def color_and_arrow(change):
     if change > 0:

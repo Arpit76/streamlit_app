@@ -31,7 +31,7 @@ with tab_page4:
 
 with tab_page5:    
     data=tab5.loadTab5()  
-    data=tab5.stockPriceMovement() 
+    #data=tab5.stockPriceMovement() 
 
 with tab_page3:    
     #data=tab3.loadTab3()
